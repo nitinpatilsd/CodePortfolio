@@ -1,0 +1,110 @@
+---
+title: "Week9"
+author: "Nitin"
+date: "July 23, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+```{r pressure, echo=FALSE}
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+Plotting Systems
+The Base Plotting System
+
+```{r}
+data(airquality)
+with(airquality, { plot(Temp, Ozone) + lines(loess.smooth(Temp, Ozone))})
+
+```
+
+```{r}
+data(cars)
+with(cars, plot(speed, dist))
+title("Speed vs. Stopping distance")
+
+```
+
+The Lattice System
+
+```{r}
+library(lattice)
+
+```
+
+```{r}
+state <- data.frame(state.x77, region = state.region)
+xyplot(Life.Exp ~ Income | region, data = state, layout = c(4, 1))
+```
+
+The ggplot2 System
+
+```{r}
+#install.packages("ggplot2")
+library(ggplot2)
+
+```
+
+```{r}
+data(mpg)
+qplot(displ, hwy, data = mpg)
+```
+
+Graphics Devices
+The Process of Making a Plot
+How Does a Plot Get Created?
+There are two basic approaches to plotting. 
+
+```{r}
+## Make plot appear on screen device
+with(faithful, plot(eruptions, waiting)) 
+## Annotate with a title
+title(main = "Old Faithful Geyser data")  
+```
+
+```{r}
+## Open PDF device; create 'myplot.pdf' in my working directory
+pdf(file = "myplot.pdf")  
+## Create plot and send to a file (no plot appears on screen)
+with(faithful, plot(eruptions, waiting))  
+## Annotate plot; still nothing on screen
+title(main = "Old Faithful Geyser data")  
+## Close the PDF file device
+dev.off()  
+## Now you can view the file 'myplot.pdf' on your computer
+
+```
+
+Graphics File Devices
+Multiple Open Graphics Devices
+Copying Plots
+
+```{r}
+ library(datasets)
+## Create plot on screen device
+with(faithful, plot(eruptions, waiting))  
+## Add a main title
+title(main = "Old Faithful Geyser data")  
+## Copy my plot to a PNG file
+dev.copy(png, file = "geyserplot.png")  
+## Don't forget to close the PNG device!
+dev.off()  
+
+```
+
+```{r}
+
+```
+

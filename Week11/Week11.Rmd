@@ -1,0 +1,129 @@
+---
+title: "Week11"
+author: "Nitin"
+date: "July 24, 2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+#Principal Component Analysis in R
+
+```{r}
+mtcars.pca <- prcomp(mtcars[,c(1:7,10,11)], center = TRUE,scale. = TRUE)
+
+summary(mtcars.pca)
+```
+
+```{r}
+str(mtcars.pca)
+```
+
+```{r}
+library(devtools)
+install_github("vqv/ggbiplot")
+
+```
+
+##Plotting PCA (Principal Component Analysis)
+
+```{r}
+library(ggfortify)
+df3<-prcomp(mtcars[,c(1:7,10,11)], center = TRUE, scale. = TRUE)
+autoplot(df3)
+```
+
+Colorize by non-numeric values
+```{r}
+autoplot(df3, data = mtcars, colour = 'mpg')
+```
+
+Passing label = TRUE draws each data label using rownames
+
+```{r}
+autoplot(df3, data = mtcars, colour = 'mpg', label = TRUE, label.size = 3)
+```
+
+Passing shape = FALSE makes plot without points. In this case, label is turned on unless otherwise specified.
+
+```{r}
+autoplot(df3, data = mtcars, colour = 'mpg', shape = FALSE, label.size = 3)
+
+```
+ Drawing eigenvectors.
+```{r}
+autoplot(df3, data = mtcars, colour = 'mpg', loadings = TRUE)
+```
+
+Attaching lables to eigenvector and changing some options.
+
+```{r}
+autoplot(df3, data = mtcars, colour = 'mpg', 
+         loadings = TRUE, loadings.colour = 'blue',
+         loadings.label = TRUE, loadings.label.size = 3)
+```
+
+Disable scaling by specifying scale = 0
+
+```{r}
+autoplot((df3), scale = 0)
+```
+
+##Plotting Factor Analysis
+```{r}
+d.factanal <- factanal(mtcars, factors = 3, scores = 'regression')
+autoplot(d.factanal, data = mtcars, colour = 'mpg')
+```
+
+```{r}
+autoplot(d.factanal, label = TRUE, label.size = 3,
+         loadings = TRUE, loadings.label = TRUE, loadings.label.size  = 3)
+```
+
+##Plotting K-means
+
+```{r}
+set.seed(1)
+autoplot(kmeans(mtcars, 3), data = mtcars)
+
+```
+
+```{r}
+autoplot(kmeans(mtcars, 3), data = mtcars, label = TRUE, label.size = 3)
+```
+
+##Plotting cluster package
+
+```{r}
+library(cluster)
+autoplot(clara(mtcars[-6], 6))
+
+```
+Drawing convex for each cluster
+```{r}
+autoplot(fanny(mtcars[-6], 6), frame = TRUE)
+```
+
+Drawing ellipse for each cluster
+
+```{r}
+autoplot(pam(mtcars[-6], 6), frame = TRUE, frame.type = 'norm')
+```
+
